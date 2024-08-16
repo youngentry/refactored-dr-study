@@ -1,5 +1,24 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+    safelist: [
+        'bg-red-500',
+        'bg-red-600',
+        'bg-red-400',
+        'bg-red-300',
+        'bg-red-200',
+        'bg-red-800',
+        'bg-violet-500',
+        'bg-violet-600',
+        'bg-violet-300',
+        'bg-black',
+        'bg-gray-900',
+        'bg-green-500',
+        'bg-green-600',
+        'bg-orange-500',
+        'bg-orange-600',
+        'bg-coral-500',
+        'bg-coral-600',
+    ],
     content: [
         './app/**/*.{js,ts,jsx,tsx,mdx}',
         './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,22 +28,31 @@ module.exports = {
         // `src` directory를 사용한다면
         './src/**/*.{js,ts,jsx,tsx,mdx}',
     ],
+
     theme: {
         extend: {
             fontFamily: {
                 pretendard: ['var(--font-pretendard)'],
             },
             colors: {
+                'dr-coral-50': '#B1D0FF',
                 'dr-coral-100': '#4B9CFF',
                 'dr-coral-200': '#2E8CFF',
                 'dr-coral-300': '#0E78F9',
+                'dr-coral-400': '#006DFF',
+                'dr-coral-500': '#0060FF',
                 'dr-gray-100': '#D2D2D2',
                 'dr-gray-200': '#ACACAC',
                 'dr-gray-300': '#838383',
                 'dr-gray-400': '#595959',
                 'dr-gray-500': '#424242',
+                'dr-indigo-0': '#2a2f42 ',
+                'dr-indigo-50': '#242838',
                 'dr-indigo-100': '#212534',
                 'dr-indigo-200': '#1C1F2E',
+                'dr-indigo-300': '#181b27',
+                'dr-indigo-400': '#11131b',
+                'dr-indigo-500': '#0e0f16',
                 'dr-dark-100': '#36393E',
                 'dr-dark-200': '#282B30',
                 'dr-dark-300': '#232323',
@@ -64,10 +92,26 @@ module.exports = {
                     '0%': { opacity: '0' },
                     '100%': { opacity: '1' },
                 },
+                fadeOut: {
+                    '100%': { opacity: '1' },
+                    '0%': { opacity: '0' },
+                },
+                pulseScale: {
+                    '0%, 100%': {
+                        transform: 'scale(1)',
+                        borderColor: 'theme("colors.dr-coral-50")',
+                    },
+                    '50%': {
+                        transform: 'scale(1.05)',
+                        borderColor: 'theme("colors.dr-coral-300")',
+                    },
+                },
             },
             animation: {
                 popIn: 'popIn 0.1s ease-out',
-                fadeIn: 'fadeIn 2s ease-out',
+                fadeIn: 'fadeIn 0.15s ease-out',
+                fadeIn: 'fadeOut 0.15s ease-out',
+                pulseScale: 'pulseScale 2s infinite ease-in-out',
             },
         },
     },

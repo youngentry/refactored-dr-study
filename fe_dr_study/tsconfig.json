@@ -27,7 +27,9 @@
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts",
-        "tailwind.config.js"
+        "tailwind.config.js",
+        "src/components/molecules/LabelCheckbox",
+        "src/components/organisms/forms/CreateConferenceForm"
     ],
     "exclude": ["node_modules"]
 }

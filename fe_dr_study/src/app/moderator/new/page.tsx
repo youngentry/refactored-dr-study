@@ -1,382 +1,181 @@
+// fe_dr_study/src/app/moderator/new/page.tsx
 'use client';
-import React, { useState } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { v4 as uuidv4 } from 'uuid';
-import { FaTrash } from 'react-icons/fa';
+import React, { FormEvent, useState } from 'react';
+import Step1 from './_components/Step1';
+import Step2 from './_components/Step2';
+import Step3 from './_components/Step3';
+import Step4 from './_components/Step4';
+import ResultStep from './_components/Result';
+import { ICreateModeratorReq } from '../_types';
+import { createModerator } from '../_api/csr';
+import { useRouter } from 'next/navigation';
+import { showToast } from '@/utils/toastUtil';
 
-type BlockType =
-    | 'block_flow_phase_1'
-    | 'block_flow_phase_2'
-    | 'block_flow_phase_3'
-    | 'block_flow_phase_4'
-    | 'block_flow_loop'
-    | 'block_command_queryToGPT'
-    | 'block_command_letParticipant_speak'
-    | 'block_string_concat'
-    | 'block_string_input'
-    | 'block_getParticipantRecord_recent';
+const pageStyles = `PAGE-CREATE-MODERATOR flex justify-center items-center w-full min-h-full h-max bg-dr-indigo-200 py-12`;
+const containerStyles = `CONTAINER-FORM min-w-[60%] w-max h-max flex bg-dr-indigo-300 text-dr-white rounded-lg shadow-dr-rb-2 overflow-hidden border-[1px] border-dr-indigo-100 p-4`;
 
-type ScriptFunctionType =
-    | 'phase( *$[int phase_num] ) { $[ ...validChildBlockFunctions ] }'
-    | 'loop( $[int loop_num] ) { $[ ...validChildBlockFunctions ] }'
-    | 'let_participant_speak( $[int pid], $[int time] );'
-    | 'let_ai_speak( get_answer_from_gpt_query( concat_string( $[ ...validChildBlockFunctions ] ) ) );'
-    | 'string_input("$[string inputStr]")'
-    | 'get_recent_participant_speak( $[int prev_num] )';
-
-// const ScriptFunctionList = {
-//     phase: ,
-//     loop: ,
-
-// }
-interface Block {
-    id: string;
-    type: BlockType;
-    content: string;
-    children?: Block[];
-    scriptFunction: ScriptFunctionType;
-}
-const blocks: Block[] = [
+const steps = [
+    { guide: '마음에 드는 사회자의 모습을 선택해보세요.', component: Step1 },
     {
-        id: uuidv4(),
-        type: 'block_flow_phase_1',
-        content: '1단계',
-        scriptFunction: '',
+        guide: 'AI에게 사회자의 역할, 노하우, 스터디 진행 단계를 설명하세요.',
+        component: Step2,
     },
     {
-        id: uuidv4(),
-        type: 'block_flow_phase_2',
-        content: '2단계',
-        scriptFunction: '',
+        guide: '블록 쌓기로 더욱 자세한 스터디 진행방식을 만들어보세요.',
+        component: Step3,
     },
     {
-        id: uuidv4(),
-        type: 'block_flow_phase_3',
-        content: '3단계',
-        scriptFunction: '',
-    },
-    {
-        id: uuidv4(),
-        type: 'block_flow_phase_4',
-        content: '4단계',
-        scriptFunction: '',
-    },
-    {
-        id: uuidv4(),
-        type: 'block_flow_loop',
-        content: '반복 블록',
-        scriptFunction: '',
-    },
-    {
-        id: uuidv4(),
-        type: 'block_command_queryToGPT',
-        content: 'GPT 블록',
-        scriptFunction: '',
-    },
-    {
-        id: uuidv4(),
-        type: 'block_command_letParticipant_speak',
-        content: '발화 시작',
-        scriptFunction: '',
-    },
-    {
-        id: uuidv4(),
-        type: 'block_getParticipantRecord_recent',
-        content: '직전 발화자의 발화 내용',
-        scriptFunction: '',
+        guide: '작성하신 내용이 맞는지 확인하고 제출해주세요.',
+        component: Step4,
     },
 ];
 
-const validChildBlocks: Record<BlockType, BlockType[]> = {
-    block_flow_phase_1: [
-        'block_flow_loop',
-        'block_command_queryToGPT',
-        'block_command_letParticipant_speak',
-    ],
-    block_flow_phase_2: [
-        'block_flow_loop',
-        'block_command_queryToGPT',
-        'block_command_letParticipant_speak',
-    ],
-    block_flow_phase_3: [
-        'block_flow_loop',
-        'block_command_queryToGPT',
-        'block_command_letParticipant_speak',
-    ],
-    block_flow_phase_4: [
-        'block_flow_loop',
-        'block_command_queryToGPT',
-        'block_command_letParticipant_speak',
-    ],
-    block_flow_loop: [
-        'block_command_queryToGPT',
-        'block_command_letParticipant_speak',
-    ],
-    block_command_queryToGPT: [
-        'block_string_concat',
-        'block_getParticipantRecord_recent',
-    ],
-    block_command_letParticipant_speak: [],
-    block_string_concat: [
-        'block_string_input',
-        'block_getParticipantRecord_recent',
-    ],
-    block_string_input: [],
-    block_getParticipantRecord_recent: [],
+const initialFormData: ICreateModeratorReq = {
+    name: '',
+    voiceType: 'A',
+    modelType: 'A',
+    characterType: 'A',
+    prePrompt: '',
+    description: '',
+    script: '',
 };
 
 const CreateModeratorPage: React.FC = () => {
-    const [droppedBlocks, setDroppedBlocks] = useState<Block[]>([]);
+    const router = useRouter();
 
-    const handleDrop = (block: Block, targetBlock?: Block) => {
-        const newBlock = { ...block, id: uuidv4() };
+    const guide = 'AI 사회자 생성';
+    const [currentStep, setCurrentStep] = useState(0);
+    const [formData, setFormData] =
+        useState<ICreateModeratorReq>(initialFormData);
+    const [isResultPage, setIsResultPage] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [result, setResult] = useState<{
+        id: number | null;
+        success: boolean | null;
+        description: string;
+    }>({ id: null, success: null, description: '' });
 
-        if (targetBlock) {
-            const addChildToBlock = (parent: Block, child: Block): Block => {
-                if (parent.id === targetBlock.id) {
-                    return {
-                        ...parent,
-                        children: parent.children
-                            ? [...parent.children, child]
-                            : [child],
-                    };
-                }
-                if (parent.children) {
-                    return {
-                        ...parent,
-                        children: parent.children.map((c) =>
-                            addChildToBlock(c, child),
-                        ),
-                    };
-                }
-                return parent;
-            };
-            setDroppedBlocks((prevBlocks) =>
-                prevBlocks.map((b) => addChildToBlock(b, newBlock)),
-            );
-        } else {
-            setDroppedBlocks((prevBlocks) => [...prevBlocks, newBlock]);
+    const handleNext = () => {
+        if (currentStep === 2 && formData.script === '') {
+            console.log('currentStep:', currentStep);
+            showToast('error', '블록을 하나 이상 놓아주세요.');
+            return;
+        }
+
+        if (currentStep < steps.length - 1) {
+            setCurrentStep(currentStep + 1);
         }
     };
 
-    const deleteBlock = (block: Block) => {
-        const removeBlockById = (blocks: Block[], id: string): Block[] => {
-            return blocks
-                .filter((block) => block.id !== id)
-                .map((block) => ({
-                    ...block,
-                    children: block.children
-                        ? removeBlockById(block.children, id)
-                        : [],
-                }));
-        };
-
-        setDroppedBlocks((prevBlocks) => removeBlockById(prevBlocks, block.id));
+    const handleBack = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
     };
 
-    const hasPhaseBlock = droppedBlocks.some((block) =>
-        block.type.startsWith('block_flow_phase'),
-    );
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (currentStep === 2 && formData.script === '') {
+            console.log('currentStep:', currentStep);
+            showToast('error', '블록을 하나 이상 놓아주세요.');
+            return;
+        }
+        setIsResultPage(true);
+        setLoading(true);
+
+        try {
+            const response = await createModerator(formData);
+            setTimeout(() => {
+                setLoading(false);
+                setResult({
+                    id: response?.data?.moderatorId,
+                    success: true,
+                    description: 'AI 사회자 생성이 완료되었습니다!',
+                });
+            }, 2000);
+        } catch (error: any) {
+            setTimeout(() => {
+                setLoading(false);
+                setResult({
+                    id: null,
+                    success: false,
+                    description:
+                        'AI 사회자 생성 중 오류가 발생했습니다. 다시 시도해주세요.',
+                });
+            }, 2000);
+        }
+        handleNext();
+    };
+
+    const handleRetry = () => {
+        setCurrentStep(0);
+        setIsResultPage(false);
+        setLoading(false);
+        setResult({ id: null, success: null, description: '' });
+    };
+
+    const StepComponent = steps[currentStep].component;
 
     return (
-        <DndProvider backend={HTML5Backend}>
-            <div className="LAYOUT-pageRoot flex flex-col items-center justify-center w-full h-auto min-h-full bg-dr-black">
-                <div className="LAYOUT-formBoxContentsArea bg-dr-dark-200 w-full max-w-[80%] h-auto min-h-full mx-auto p-8">
-                    <div className="flex flex-row w-full h-auto min-h-full justify-between">
-                        <div className="LEFT-BLOCK-CONTAINER w-[30%] h-full bg-dr-gray-500 p-4 sticky top-8">
-                            <div className="LEFT-BLOCKS-BOX bg-dr-dark-300 w-full h-full flex flex-col gap-2 px-2 py-2">
-                                {blocks.map((block) => (
-                                    <DraggableBlock
-                                        key={block.id}
-                                        block={block}
-                                    />
-                                ))}
+        <div className={pageStyles}>
+            <div className={containerStyles}>
+                <div className="h-max min-h-[70vh] w-full flex flex-col justify-start items-center gap-4 ">
+                    {!isResultPage && (
+                        <section className="TITLE-SECTION w-1/2 h-1/4 flex flex-col justify-center">
+                            <div className="TITLE-AND-PAHSE items-center flex flex-col justify-center w-full h-max">
+                                <div className="TITLE-TEXT text-dr-header-2 font-bold w-full text-center">
+                                    {guide}
+                                </div>
+                                <div className="SUBTITLE-TEXT text-dr-body-4 font-semibold text-dr-coral-100 w-full text-center">
+                                    {steps[currentStep].guide}
+                                </div>
+                                <div className="BAR-PHASE mt-8 w-4/6 h-max pb-6">
+                                    <div className="relative w-full h-max">
+                                        <div className="absolute top-[0.375rem] left-0 w-full border-[1px] border-dr-indigo-100 z-0"></div>
+                                        <div className="absolute top-0 left-0 w-full flex flex-row justify-around z-10">
+                                            {steps.map((_, i) => {
+                                                return (
+                                                    <div
+                                                        key={i}
+                                                        className={`w-3 h-3 bg-dr-coral-300 rounded-full shadow-md border-[1px] transition-colors duration-300 ${
+                                                            i === currentStep
+                                                                ? 'border-dr-white'
+                                                                : 'border-dr-coral-300'
+                                                        }`}
+                                                    ></div>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className="DIVIDER-VERTICAL bg-dr-gray-500 w-[2px] rounded-full"></div>
-                        <div className="RIGHT-ASSEMBLY-CONTAINER w-[65%] h-auto min-h-full bg-dr-gray-500 p-4">
-                            <DroppableArea
-                                onDrop={handleDrop}
-                                hasPhaseBlock={hasPhaseBlock}
-                                onDelete={deleteBlock}
-                            >
-                                {droppedBlocks.map((block) => (
-                                    <DroppableBlock
-                                        key={block.id}
-                                        block={block}
-                                        onDrop={handleDrop}
-                                        onDelete={deleteBlock}
-                                    >
-                                        {block.children &&
-                                            block.children.map((child) => (
-                                                <DroppableBlock
-                                                    key={child.id}
-                                                    block={child}
-                                                    onDrop={handleDrop}
-                                                    onDelete={deleteBlock}
-                                                >
-                                                    {child.children &&
-                                                        child.children.map(
-                                                            (grandchild) => (
-                                                                <DroppableBlock
-                                                                    key={
-                                                                        grandchild.id
-                                                                    }
-                                                                    block={
-                                                                        grandchild
-                                                                    }
-                                                                    onDrop={
-                                                                        handleDrop
-                                                                    }
-                                                                    onDelete={
-                                                                        deleteBlock
-                                                                    }
-                                                                ></DroppableBlock>
-                                                            ),
-                                                        )}
-                                                </DroppableBlock>
-                                            ))}
-                                    </DroppableBlock>
-                                ))}
-                            </DroppableArea>
-                        </div>
-                    </div>
+                        </section>
+                    )}
+                    {!isResultPage && (
+                        <section className="CONTENTS-SECTION-STEP1-AVATAR animate-fadeIn w-max min-w-[75%] h-max min-h-[50%] flex flex-col gap-2 transition-all duration-200">
+                            <StepComponent
+                                onNext={handleNext}
+                                onBack={handleBack}
+                                onSubmit={handleSubmit}
+                                data={formData}
+                                setData={setFormData}
+                            />
+                        </section>
+                    )}
+                    {isResultPage && (
+                        <ResultStep
+                            loading={loading}
+                            result={result}
+                            successMessage="AI 사회자 생성이 완료되었습니다!"
+                            failMessage="AI 사회자 생성에 실패했습니다."
+                            onHomeClick={() => router.push('/')}
+                            onFailureEditClick={handleRetry}
+                        />
+                    )}
                 </div>
             </div>
-        </DndProvider>
-    );
-};
-
-const DraggableBlock: React.FC<{ block: Block }> = ({ block }) => {
-    const [{ isDragging }, drag] = useDrag(() => ({
-        type: 'BLOCK',
-        item: block,
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    }));
-
-    return (
-        <div
-            ref={drag}
-            className={`UNIT-BLOCK w-full min-h-14 p-2 cursor-pointer ${isDragging ? 'opacity-50' : 'opacity-100'}`}
-            style={{ backgroundColor: getBlockColor(block.type) }}
-        >
-            {block.content}
-        </div>
-    );
-};
-
-const getBlockColor = (type: BlockType): string => {
-    switch (type) {
-        case 'block_flow_phase_1':
-        case 'block_flow_phase_2':
-        case 'block_flow_phase_3':
-        case 'block_flow_phase_4':
-            return 'red';
-        case 'block_flow_loop':
-            return 'darkred';
-        case 'block_command_queryToGPT':
-            return 'violet';
-        case 'block_command_letParticipant_speak':
-            return 'blue';
-        case 'block_getParticipantRecord_recent':
-            return 'gray';
-        default:
-            return 'gray';
-    }
-};
-
-const DroppableBlock: React.FC<{
-    block: Block;
-    onDrop: (block: Block, targetBlock: Block) => void;
-    onDelete: (block: Block) => void;
-}> = ({ block, onDrop, onDelete, children }) => {
-    const [{ isOver, canDrop }, drop] = useDrop(() => ({
-        accept: 'BLOCK',
-        drop: (item: Block, monitor) => {
-            if (!monitor.didDrop()) {
-                if (validChildBlocks[block.type].includes(item.type)) {
-                    onDrop({ ...item, id: uuidv4() }, block);
-                } else {
-                    alert(
-                        `유효하지 않은 블록입니다. ${block.type} 블록에는 ${validChildBlocks[block.type].join(', ')} 블록만 추가할 수 있습니다.`,
-                    );
-                }
-            }
-        },
-        collect: (monitor) => ({
-            isOver: monitor.isOver(),
-            canDrop: monitor.canDrop(),
-        }),
-        canDrop: (item: Block) =>
-            validChildBlocks[block.type].includes(item.type),
-    }));
-
-    const handleDelete = () => {
-        if (window.confirm('정말 삭제하시겠습니까?')) {
-            onDelete(block);
-        }
-    };
-
-    return (
-        <div
-            ref={drop}
-            className={`UNIT-BLOCK animate-popIn relative ${isOver ? 'bg-dr-dark-200' : ''} border-opacity-0 border-dr-coral-300 ${canDrop ? 'border-2 border-opacity-100' : ''} rounded-md w-full my-2 min-h-20 h-auto transition-all duration-300`}
-            style={{ backgroundColor: getBlockColor(block.type) }}
-        >
-            {' '}
-            <div className="flex flex-row h-auto gap-2 justify-between">
-                <div className="HEAD rounded-tl-md rounded-br-md bg-black h-full min-w-[100px] p-1">
-                    {block.content}
-                </div>
-                <div className="CHILDREN h-auto w-full">{children}</div>
-                <button
-                    className="w-6 h-6 m-1 p-1  rounded-full hover:text-gray-500 transition-colors duration-200"
-                    onClick={handleDelete}
-                >
-                    <FaTrash />
-                </button>
-            </div>
-        </div>
-    );
-};
-
-const DroppableArea: React.FC<{
-    onDrop: (block: Block) => void;
-    hasPhaseBlock: boolean;
-    onDelete: (block: Block) => void;
-}> = ({ onDrop, hasPhaseBlock, onDelete, children }) => {
-    const [{ isOver, canDrop }, drop] = useDrop(() => ({
-        accept: 'BLOCK',
-        drop: (item: Block, monitor) => {
-            if (!monitor.didDrop()) {
-                if (hasPhaseBlock || item.type.startsWith('block_flow_phase')) {
-                    onDrop({ ...item, id: uuidv4() });
-                } else {
-                    alert('단계 블록을 먼저 추가해야 합니다.');
-                }
-            }
-        },
-        collect: (monitor) => ({
-            isOver: monitor.isOver(),
-            canDrop: monitor.canDrop(),
-        }),
-        canDrop: (item: Block) =>
-            hasPhaseBlock || item.type.startsWith('block_flow_phase'),
-    }));
-
-    return (
-        <div
-            ref={drop}
-            className={`DROPPABLE_AREA bg-dr-dark-200 w-full h-auto min-h-full flex flex-col px-2 py-2 ${isOver ? 'bg-dr-dark-100' : ''} border-opacity-0 border-dr-coral-300 ${canDrop ? 'border-2 border-opacity-100' : ''} transition-all duration-300`}
-        >
-            {isOver ? '내려놓을 수 있음' : '블록 끌어오셈'}
-            {children}
         </div>
     );
 };
 
 export default CreateModeratorPage;
-//
