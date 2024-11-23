@@ -1,138 +1,118 @@
-<h3>SSAFY 11기 공통프로젝트</h3>
-![image](/uploads/a599f2681a5cffea8a242278a4e31d5e/image.png)
-</br>
+# Dr. Study
+<img src="./Docs/README_assets/movezoo.png"> 
 
-<div align="center">
-<![image](/uploads/a599f2681a5cffea8a242278a4e31d5e/image.png)" style="width:300px ">
-</div>
+<br>
 
+## 😎 개요
 
+  서비스명: **닥터스터디**  
+  개발기간: 2024.07.05 ~ 2024.08.16
+  
 
-# 팀원 소개
+<br>
 
-<div align="center">
+## 🌱 닥터스터디 팀원 소개 🌱
+|<img src="https://github.com/ABizCho.png" height="100">|<img src="https://github.com/youngentry.png"  width="100%" height="100">|<img src="https://github.com/garam-yang.png" width="100%" height="100">|<img src="https://github.com/hamsteak1488" width="100%" height="100">|<img src="https://github.com/jangcheolhyeon" width="100%" height="100">|<img  src="https://avatars.githubusercontent.com/u/114475881?v=4" width="100%" height="100">|
+|:--:|:--:|:--:|:--:|:--:|:--:|
+|`팀장` 조성우|유영한|김주현|신재민|장철현|박경모|
+|Frontend|Frontend|Frontend|Backend|Backend|Backend|
+|||||||
 
-| <img src="https://github.com/brobac.png" width="100"/> | <img src="https://github.com/Park-taewoo.png" width="100"/> | <img src="https://github.com/kyoungmopark.png" width="100"/> | <img src="https://github.com/sungholion.png" width="100"/> | <img src="https://github.com/hhajae.png" width="100"/> | <img src="https://github.com/miiiingyuuu.png" width="100"/> |
-|:---------------------------------------------------------:|:-------------------------------------------------------:|:----------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|:---------------------------------------------------------:|
-|       [박형준 - BE, Infra](https://github.com/brobac)       |       [박태우 - MB](https://github.com/Park-taewoo)       |       [박경모 - BE](https://github.com/kyoungmopark)       |       [조성호 - BE](https://github.com/sungholion)       |       [하재훈 - FE](https://github.com/hhajae)       |       [박민규 - FE](https://github.com/miiiingyuuu)       |
-</div>
-
-
-
-
-<center>
-<h1>Tech Stack</h1>
-
-### BackEnd
-
-<img src="https://img.shields.io/badge/JAVA-FBBA00?logoColor=000&style=for-the-badge"> 
-<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Redis-FF4438?logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Jmeter-D22128?logoColor=fff&style=for-the-badge">
+<br/>
+<br/>
 
 
-### FrontEnd
+## 😊 서비스 소개
+기존에도 많은 모션인식 게임이 있습니다.<br>
+하지만 기존의 모션인식 게임은 비싼 장비가격으로 일반적으로 즐기기엔 접근성이 좋지 않습니다.<br>
 
-<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white"> <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
-<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
-<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
-<img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white">
-<img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white">
-
-
+그래서! 저희는 **WebRtc와 모션인식 기능**을 결합하여 사용자들의 접근성을 높이고자 합니다.<br>
+***움직여! zoo***는 흔히 사용하는 키보드가 아닌 웹캠을 통해 **사용자의 움직임을 인식하여 조작**하는 **신선한** 방식의 레이싱 게임입니다.<br>
+**싱글, 멀티, 아이템** 모드와 **특색있는 맵**을 즐기고 재화를 모아 **귀여운 캐릭터**를 해금해보세요!
 
 
+<br/>
 
-### CI/CD
+## 🎇 주요 서비스
 
-<img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/Jenkins-D24939?logo=jenkins&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Amazon%20EC2-F90?logo=amazonec2&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/NGINX-009639?logo=nginx&logoColor=fff&style=for-the-badge">
+|||
+|---|---|
+|<img width="40vw" src="./Docs/readme_gif/main-login.gif">|<img src="./Docs/readme_gif/main-racer-list.gif">|
+|`메인화면` 회원가입 / 로그인 |`로비화면` 사용자 보유 캐릭터 열람|
+|<img src="./Docs/readme_gif/main-racer-buy.gif">|<img src="./Docs/readme_gif/main-profile.gif">|
+|`상점` 재화로 미보유 캐릭터 구매|`프로필` 프로필이미지, 닉네임, 비밀번호 변경|
+|<img src="./Docs/readme_gif/single-play.gif">|<img src="./Docs/readme_gif/main-rank.gif">|
+|`싱글 플레이` 혼자서 플레이하는 모드|`랭킹` 싱글 플레이 최단기록 랭킹|
+|<img src="./Docs/readme_gif/multi-play.gif">|<img src="./Docs/readme_gif/single-single-play3.gif">|
+|`멀티 플레이` 다른 사용자와 함께 플레이|`보상 시스템` 결과에 따른 재화 제공|
 
-### Team Collaboration Tools
+<br/>
 
-<img src="https://img.shields.io/badge/Jira-0052CC?logo=jira&logoColor=fff&style=for-the-badge"> <img src="https://img.shields.io/badge/GitLab-FC6D26?logo=gitlab&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Mattermost-0058CC?logo=mattermost&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=fff&style=for-the-badge">
-<img src="https://img.shields.io/badge/Notion-000?logo=notion&logoColor=fff&style=for-the-badge">
-</center>
 
-</br>
-</br>
-<h1>Architecture</h1>
-![image](/uploads/7bba05073e56303f04d0d46d997df3ab/image.png)
+## ⚙ 사용 기술
 
-# 소개
+#### **FE**
 
-### 🌃 기획 의도
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/WebRTC-333333?style=for-the-badge&logo=webrtc&logoColor=white"> <img src="https://img.shields.io/badge/TensorFlow.js-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white">
+<img src="https://img.shields.io/badge/java script-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/tailwind css-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
+<img src="https://img.shields.io/badge/recoil-3578E5?style=for-the-badge&logo=recoil&logoColor=white">
+<img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white">
+<img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
+<img src="https://img.shields.io/badge/vs code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
 
-> 공공 데이터를 쉽게 사용할 수 없을까?
+#### **BE**
 
-- 공공데이터를 활용한 서비스가 증가하고 있음.
-- 개발이 익숙하지 않은 사람은 공공 데이터 활용을 위한 코드 작성이 어려움.
-- 개발자는 파일 데이터와 Open API를 사용하기 위해 호출 코드를 반복 작성해야 함.
-- 간편하게 공공 데이터 포털이 제공하는 데이터를 가져올 수 있게 돕는 라이브러리를 기획하게 되었음.
+<img src="https://img.shields.io/badge/Spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> <img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">
+<img src="https://img.shields.io/badge/jpa-6DB33F?style=for-the-badge&logo=jpa&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white">
+<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+<img src="https://img.shields.io/badge/Intellij Idea-000000?style=for-the-badge&logo=intellijidea&logoColor=white">
 
-### 서비스 대상
+#### **CI/CD**
 
-- 개발이 익숙하지 않은 사람
-- 개발이 능숙하지만, 공공 데이터 조회를 위해 반복해서 코드 작 번거로운 사람
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/> 
+<img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"/>
+<img src="https://img.shields.io/badge/openssl-721412?style=for-the-badge&logo=openssl&logoColor=white"> 
 
-이러한 사람들을 타겟으로 잡아두었습니다.
 
-### 💎 서비스 기능
+#### **협업**
 
-### 1. 코드 자동 생성 (FREEMARKER)
+<img src="https://img.shields.io/badge/GitLab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white"> <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">
+<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+<img src="https://img.shields.io/badge/mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">
 
-- DTO 클래스 자동 생성
-- API 연동 코드 템플릿 제공
-- 커스텀 코드 생성 템플릿 지원
-- 다양한 프레임워크 지원
 
-### 2. 자동 배포 시스템
+<br/>
+<br/>
 
-- GitLab Package Registry 연동
-- CI/CD 파이프라인 자동화
-- 버전 관리 및 릴리즈 자동화
-- 배포 로그 및 모니터링
+## 🖼️ 와이어프레임
+![image](https://github.com/user-attachments/assets/46e87648-d842-44b7-ae39-950dd43478d6)
 
-### 3. 동적 웹 크롤링 (Selenium)
 
-- 실시간 데이터 수집
-- 자동 데이터 업데이트
-- 페이지네이션 자동 처리
-- 에러 복구 메커니즘
-# 🎇 서비스 이용 화면
+## 🧱 서비스 아키텍쳐
 
-## 가이드 페이지 
+![배포아키텍쳐](./Docs/README_assets/아키텍처.png)
+<br/>
 
-### 메인 페이지 
-![EZDG_-_Chrome_2024-11-18_20-43-48](/uploads/eded36693883f0fa9b1472e49af7ceef/EZDG_-_Chrome_2024-11-18_20-43-48.gif)
-### 검색 기능
-![EZDG_-_Chrome_2024-11-18_20-44-52](/uploads/4f5713af43feb223a2e0ef6ccf12880c/EZDG_-_Chrome_2024-11-18_20-44-52.gif)
-### 설치 가이드 
-![EZDG_-_Chrome_2024-11-18_20-45-09__1_](/uploads/73189ed9d80bbdf5ac52807829ce34c5/EZDG_-_Chrome_2024-11-18_20-45-09__1_.gif)
 
-## 예시프로젝트 - 대구의 자랑
-![대구의_자랑_-_Chrome_2024-11-18_14-49-00](/uploads/f80384aecaa80ffb7851edb91d55d59a/대구의_자랑_-_Chrome_2024-11-18_14-49-00.gif)
+## 📊 ERD
+![image](https://github.com/user-attachments/assets/0992353d-1518-49e3-8804-f5568a8ca019)
 
-## 예시프로젝트 - Find My Company!
-![기업_기본_정보_조회_-_Chrome_2024-11-18_14-25-12](/uploads/374606ad619279dace61abe1224c9944/기업_기본_정보_조회_-_Chrome_2024-11-18_14-25-12.gif)
 
-## 관리자 페이지
+<br/>
 
-### API 등록 및 공공데이터 포털 크롤링
-![api-등록-크롤링](/uploads/b02007ecd0a87f72a7a354d4ff31cd91/api-등록-크롤링.gif)
+## 💬 API 명세서
 
-### API 크롤링 결과 확인 및 저장
-![api-등록-결과-저장](/uploads/ec2da23a41af49a58af37b9e4f9660f9/api-등록-결과-저장.gif)
+![API명세서](./Docs/API명세서.pdf)
 
-### 파일 등록 
-![파일-등록-업로드](/uploads/477c1848b35249e5096d3a99de45d1af/파일-등록-업로드.gif)
+<br/>
 
-### 파일 컬럼명 번역
-![파일-등록-번역](/uploads/8c690c44b1f6b12b9e9d498f6a3796a5/파일-등록-번역.gif)
+## 프로젝트 기록
+![Notion 협업링크](https://weeeeejae.notion.site/E204-Move-Zoo-9057af01d3f54955a998ceb8c429ce0a?pvs=4)
 
-### 라이브러리 배포
-![파일-배포-현황](/uploads/e1c7edcb48f2ec1b9b99759c40904b9b/파일-배포-현황.gif)
+
+<!-- ## 🖼️ 와이어프레임 -->
+<!-- ![와이어프레임](README_assets/20_와이어프레임.png) -->
