@@ -1,7 +1,6 @@
-import RootLayout from '@/app/layout';
-import { ClientInterface } from '@/components/template/conference/ConferenceTemplate';
+import { ClientInterface } from '@/components/template/conference/hooks/useCallAllPeers';
 import { RootState } from '@/store';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 interface VideoProps {
@@ -62,11 +61,11 @@ const Video = ({ existingPeers, peerId, client }: VideoProps) => {
 export default Video;
 
 const VideoBorder = ({ client }: { client: ClientInterface }) => {
-    const focusingPeerId = useSelector(
-        (state: RootState) => state.focusingPeerId.focusingPeerId,
+    const { focusingPeerId } = useSelector(
+        (state: RootState) => state.focusingPeerId,
     );
 
-    return client?.memberId === focusingPeerId ? (
+    return client?.memberId === parseInt(focusingPeerId) ? (
         <div className="absolute h-full w-full flex items-center justify-center self-center rounded-lg overflow-hidden border-[2px] border-dr-coral-200"></div>
     ) : null;
 };

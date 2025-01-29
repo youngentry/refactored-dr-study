@@ -9,7 +9,6 @@ interface RecorderProps {
     stompClient: any;
     isFinishMyTurn: boolean;
     isStartRecordingAudio: number;
-    // setIsFinishMyTurn: Dispatch<SetStateAction<boolean>>;
     setIsStartRecordingAudio: Dispatch<SetStateAction<number>>;
 }
 
@@ -19,13 +18,11 @@ function Recorder({
     stompClient,
     isFinishMyTurn,
     isStartRecordingAudio,
-    // setIsFinishMyTurn,
     setIsStartRecordingAudio,
 }: RecorderProps) {
     const dispatch = useDispatch();
 
     const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
-    // const [isRecording, setIsRecording] = useState(false);
 
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const chunksRef = useRef<Blob[]>([]);
@@ -42,7 +39,6 @@ function Recorder({
         console.log('isStartRecordingAudio:', isStartRecordingAudio);
         if (timeForAudioRecord) {
             startAudioStream();
-            // setIsShowTextAudioMessageBox(true);
 
             // 설정한 시간 후에 오디오 녹음 중지
             console.log('before timeout');
@@ -51,7 +47,6 @@ function Recorder({
                 if (!isFinishMyTurn) {
                     console.log('timeout executed');
                     stopAudioStream();
-                    // setIsShowTextAudioMessageBox(false);
                 }
             }, timeForAudioRecord);
             console.log('after timeout');
@@ -63,14 +58,6 @@ function Recorder({
             };
         }
     }, [isStartRecordingAudio]);
-
-    // useEffect(() => {
-    //     // 내 턴이 끝나면 곧바로 녹음 중지
-    //     if (isFinishMyTurn) {
-    //         stopAudioStream();
-    //         setIsFinishMyTurn(false);
-    //     }
-    // }, [isFinishMyTurn]);
 
     // 오디오 스트림 시작
     const startAudioStream = async () => {
@@ -98,7 +85,7 @@ function Recorder({
                     const blob = new Blob(chunksRef.current, {
                         type: 'audio/webm',
                     });
-                    chunksRef.current = []; // Clear chunks
+                    chunksRef.current = [];
                     const reader = new FileReader();
                     reader.onload = () => {
                         const arrayBuffer = reader.result as ArrayBuffer;
@@ -130,7 +117,6 @@ function Recorder({
             };
 
             mediaRecorder.start();
-            // setIsRecording(true);
             console.log('Audio recording started');
         } catch (error) {
             console.error('Error accessing audio stream:', error);
@@ -144,7 +130,6 @@ function Recorder({
         ) {
             mediaRecorderRef.current.stop();
             console.log('Audio recording stopped');
-            // setIsRecording(false);
             setTimeForAudioRecord(0);
         }
 
@@ -154,50 +139,7 @@ function Recorder({
         }
     };
 
-    // const [textAudioMessage, setTextAudioMessage] = useState<string>('');
-
-    // const handleInputChange = (
-    //     event: React.ChangeEvent<HTMLTextAreaElement>,
-    // ) => {
-    //     setTextAudioMessage(event.target.value); // 입력 값 업데이트
-    // };
-
-    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    //     event.preventDefault(); // 기본 폼 제출 방지
-    //     // 메시지 처리 로직을 여기에 추가 (ex: API 호출 등)
-    //     console.log('작성한 메시지:', textAudioMessage);
-
-    //     stompClient.send(
-    //         `/pub/signal/${conferenceId}/participant-audio-text`,
-    //         {},
-    //         JSON.stringify({
-    //             id: memberId,
-    //             text: textAudioMessage, // 발화 내역을 text로 전송
-    //         }),
-    //     );
-    //     setTextAudioMessage(''); // 입력 값 초기화
-    // };
-
     return null;
-    // <>
-    //     <div className="text-black bg-black w-[20rem] h-[20rem]">
-    //         <form onSubmit={handleSubmit} className="h-full">
-    //             <textarea
-    //                 value={textAudioMessage}
-    //                 onChange={handleInputChange}
-    //                 placeholder="메시지를 입력하세요"
-    //                 className="w-full h-full"
-    //             />
-    //             <button
-    //                 className="p-2 w-full bg-gray-200 hover:bg-dr-coral-400 disabled:bg-red-500 disabled:cursor-not-allowed"
-    //                 type="submit"
-    //                 // disabled={!isShowTextAudioMessageBox}
-    //             >
-    //                 전송
-    //             </button>
-    //         </form>
-    //     </div>
-    // </>
 }
 
 export default Recorder;

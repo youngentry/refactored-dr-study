@@ -1,22 +1,14 @@
 'use client';
 
-import { conferenceAPI as API } from '@/app/api/axiosInstanceManager';
-import { POST } from '@/app/api/routeModule';
-import { Button } from '@/components/atoms';
 import Icon from '@/components/atoms/Icon/Icon';
-import { ClientInterface } from '@/components/template/conference/ConferenceTemplate';
 import { RootState } from '@/store';
-import { setAvatarDialogue } from '@/store/slices/avatarDialogueSlice';
-import { setIsAvatarSpeaking } from '@/store/slices/isAvatarSpeakingSlice';
-import { pushSummaryMessages } from '@/store/slices/summaryMessagesSlice';
-import { setTimeForAvatarSpeaking } from '@/store/slices/timeForAvatarSpeakingSlice';
 import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Timer } from '../ConferenceProgress/ConferenceProgress';
+import { ClientInterface } from '@/components/template/conference/hooks/useCallAllPeers';
 
 interface ConferenceControlBarProps {
-    subscriptionList: string[];
     client: ClientInterface;
     stompClient: any;
     localStream: MediaStream | null;
@@ -26,13 +18,8 @@ interface ConferenceControlBarProps {
 }
 
 const ConferenceControlBar = ({
-    subscriptionList,
-    client,
     stompClient,
     localStream,
-    existingPeers,
-    setExistingPeers,
-    conferenceId,
 }: ConferenceControlBarProps) => {
     const router = useRouter();
 
@@ -42,22 +29,6 @@ const ConferenceControlBar = ({
 
     const [videoEnabled, setVideoEnabled] = useState(true); // 비디오 상태
     const [audioEnabled, setAudioEnabled] = useState(true); // 오디오 상태
-
-    // 통화 종료 기능
-    const disconnectCall = (peerId: string) => {
-        if (existingPeers[peerId]) {
-            // 연결된 사용자 스트림 종료
-            const peer = existingPeers[peerId];
-            peer.getTracks().forEach((track) => track.stop());
-
-            // 연결된 사용자 목록에서 제거
-            setExistingPeers((prevPeers) => {
-                const updatedPeers = { ...prevPeers };
-                delete updatedPeers[peerId];
-                return updatedPeers;
-            });
-        }
-    };
 
     // 비디오 토글 핸들러
     const toggleVideo = () => {
@@ -79,6 +50,7 @@ const ConferenceControlBar = ({
         }
     };
 
+    // 통화 종료 기능
     const handleDisconnectAll = async () => {
         try {
             // 연결 종료
@@ -92,43 +64,9 @@ const ConferenceControlBar = ({
         }
     };
 
-    // const dispatch = useDispatch();
-
-    // const handleClickStartSpeaking = (boolean: boolean) =>
-    //     dispatch(setIsAvatarSpeaking(boolean));
-
-    // const handleClickAddDialogue = (message: string) =>
-    //     dispatch(setAvatarDialogue(message));
-
-    // const handleClickAddSummary = (message: {}) =>
-    //     dispatch(pushSummaryMessages(message));
-
     return (
         <div className="relative z-50 flex justify-center bg-[#191B28]  gap-dr-10 h-full border-t-[1px] border-dr-indigo-0">
             <Timer />
-            {/* <Button onClick={() => handleClickStartSpeaking(true)}>
-                isAvatarSpeaking True
-            </Button>
-            <Button onClick={() => handleClickStartSpeaking(false)}>
-                isAvatarSpeaking False
-            </Button>
-            <Button onClick={() => handleClickAddDialogue('')}>
-                handleClickAddDialogue
-            </Button>
-            <Button
-                onClick={() =>
-                    handleClickAddDialogue(
-                        '메시지입니다. 메시지입니다. 메시지입니다. 메시지입니다. 메시지입니다.',
-                    )
-                }
-            >
-                handleClickAddDialogue
-            </Button>
-            <Button
-                onClick={() => handleClickAddSummary({ message: '요약 추가.' })}
-            >
-                handleClickAddSummary
-            </Button> */}
             <button className="cursor-auto" onClick={toggleVideo}>
                 {videoEnabled ? (
                     <Icon

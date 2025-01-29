@@ -3,7 +3,6 @@ import Recorder from './Recorder';
 import { Button } from '@/components/atoms';
 import Icon from '@/components/atoms/Icon/Icon';
 import { Client } from 'stompjs';
-import { ClientInterface } from '@/components/template/conference/ConferenceTemplate';
 import { ConferenceData } from '@/interfaces/conference';
 import Chats from './Chats';
 import ConferenceParticipants from './ConferenceParticipants';
@@ -17,17 +16,14 @@ import { setIsAvatarSpeaking } from '@/store/slices/isAvatarSpeakingSlice';
 import { setTimeForAvatarSpeaking } from '@/store/slices/timeForAvatarSpeakingSlice';
 import { setIsMutedBySystem } from '@/store/slices/isMutedBySystemSlice';
 import { setGptSummaryBySystem } from '@/store/slices/gptSummaryBySystemSlice';
-import {
-    initSummaryMessages,
-    pushSummaryMessages,
-} from '@/store/slices/summaryMessagesSlice';
+import { pushSummaryMessages } from '@/store/slices/summaryMessagesSlice';
 import { setAvatarDialogue } from '@/store/slices/avatarDialogueSlice';
 import { setTimeForAudioRecord } from '@/store/slices/timeForAudioRecord';
 import ConferenceStartAndCloseButtons from '../ConferenceStartAndCloseButtons/ConferenceStartAndCloseButtons';
 import FinishMyTurnButton from './FinishMyTurnButton';
 import { setFocusingId } from '@/store/slices/conferenceFocusingPeerIdSlice';
 import { useRouter } from 'next/navigation';
-import { init } from 'next/dist/compiled/webpack/webpack';
+import { ClientInterface } from '@/components/template/conference/hooks/useCallAllPeers';
 
 export interface JoiningMember {
     id: number;
@@ -63,7 +59,6 @@ interface SignalProps {
     isJoined: boolean;
     existingPeers: Record<string, MediaStream>;
     setExistingPeers: Dispatch<SetStateAction<Record<string, MediaStream>>>;
-    subscriptionList: string[];
     stompClient: Client | null;
     memberData?: any;
     conferenceId: number;
@@ -76,7 +71,6 @@ const Signal = ({
     client,
     isJoined,
     setExistingPeers,
-    subscriptionList,
     stompClient,
     conferenceId,
     memberData,
@@ -115,7 +109,6 @@ const Signal = ({
     const subscribeToMessages = () => {
         stompClient?.subscribe(generateUrl('chat'), (message: any) => {
             const newMessage: Message = JSON.parse(message.body); // 수신된 메시지 파싱
-            subscriptionList.push(newMessage.message); // 수신된 메시지를 구독 목록에 추가
             setMessages((prevMessages) => [...prevMessages, newMessage]); // 수신된 메시지를 메시지 목록에 추가
 
             if (messagesEndRef.current) {
@@ -209,8 +202,6 @@ const Signal = ({
         );
     };
 
-    // 요약
-
     // 아바타 현재 발화 신호 처리
     const handleAvatarDialogueSignal = (newSignal: SignalInterface) => {
         dispatch(setAvatarDialogue(newSignal.content as string));
@@ -250,21 +241,6 @@ const Signal = ({
             currentMembers.filter((member) => member.id !== newSignal.id),
         );
     };
-
-    // 방송 종료 신호 처리
-    // const handleCloseSignal = () => {
-    //     dispatch(setIsCloseSignal(true));
-
-    //     if (stompClient) {
-    //         stompClient?.send(
-    //             `/pub/signal/${conferenceId}/close`,
-    //             {},
-    //             JSON.stringify({
-    //                 id: memberData?.id, // 송신자 ID
-    //             }),
-    //         );
-    //     }
-    // };
 
     // 메시지 전송 함수
     const sendMessage = () => {
@@ -348,7 +324,6 @@ const Signal = ({
                     stompClient={stompClient}
                     isStartRecordingAudio={isStartRecordingAudio}
                     isFinishMyTurn={isFinishMyTurn}
-                    // setIsFinishMyTurn={setIsFinishMyTurn}
                     setIsStartRecordingAudio={setIsStartRecordingAudio}
                 />
             </div>
@@ -356,7 +331,6 @@ const Signal = ({
             <div className="fixed flex bottom-[3px] right-[3px] p-3 rounded-xl  bg-opacity-40">
                 <ConferenceStartAndCloseButtons
                     conferenceInfo={conferenceInfo}
-                    // handleCloseSignal={handleCloseSignal}
                 />
             </div>
             <div className="absolute right-[21%] bottom-[11%] ">
