@@ -1,4 +1,3 @@
-import Icon from '@/components/atoms/Icon/Icon';
 import React from 'react';
 
 interface OpenTotalSummaryButtonProps {

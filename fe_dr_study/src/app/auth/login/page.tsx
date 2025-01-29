@@ -12,7 +12,6 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { setMemberState } from '@/store/slices/memberSlice';
 import { TIsSigned, setIsSigned } from '@/store/slices/authSlice';
-import path from 'path';
 import { showToast } from '@/utils/toastUtil';
 import { getSessionStorageItem } from '@/utils/sessionStorage';
 

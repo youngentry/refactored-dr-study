@@ -1,11 +1,9 @@
 import Image from 'next/image';
-import { useState } from 'react';
 import { getGroupListBy } from './group/_api/ssr';
 import ButtonWithRouter from './group/_components/ButtonWithRouter';
 import Link from 'next/link';
 import GroupCard from './group/list/_components/GroupCard';
 import { ModeratorList } from '@/components/template/moderator/ModeratorTemplate';
-import { Moderator } from '@/interfaces/moderator';
 import { GET } from './api/routeModule';
 
 const pageStyles = `PAGE-HOME flex flex-col justify-start items-center w-full min-h-full h-max bg-dr-black overflow-x-hidden bg-gradient-to-b from-dr-black to-dr-indigo-100`;

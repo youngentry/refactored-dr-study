@@ -24,20 +24,8 @@ const ConferenceWaitingRoomTemplate = ({
     conferenceInvitees,
 }: ConferenceWaitingRoomTemplateProps) => {
     console.log('conferenceInfo =>', conferenceInfo);
-    const {
-        title,
-        subject,
-        hostId,
-        id,
-        imageUrl,
-        memberCapacity,
-        openTime,
-        closeTime,
-        startTime,
-        finishTime,
-        participants,
-        studyGroupId,
-    } = conferenceInfo || {};
+    const { title, subject, hostId, id, imageUrl, closeTime, studyGroupId } =
+        conferenceInfo || {};
 
     const router = useRouter();
 

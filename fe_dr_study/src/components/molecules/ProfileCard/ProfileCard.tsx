@@ -2,7 +2,6 @@ import { memberAPI } from '@/app/api/axiosInstanceManager';
 import { DELETE, PATCH } from '@/app/api/routeModule';
 import { Member } from '@/app/group/[group_id]/_types';
 import { Button } from '@/components/atoms';
-import Icon from '@/components/atoms/Icon/Icon';
 import { StatisticsData } from '@/interfaces/statistics';
 import { formatDate, getDateTimePart } from '@/utils/date';
 import { removeMemberData } from '@/utils/sessionStorage';

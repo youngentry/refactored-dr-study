@@ -10,11 +10,6 @@ export const logoStyles = tv({
             xl: 'w-10 h-10',
         },
     },
-    compoundVariants: [
-        // {
-        //   active: true,
-        //   class: 'bg-blue-500 text-white',
-        // },
-    ],
+    compoundVariants: [],
     defaultVariants: {},
 });

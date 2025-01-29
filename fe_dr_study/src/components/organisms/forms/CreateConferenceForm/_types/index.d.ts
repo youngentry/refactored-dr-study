@@ -14,8 +14,3 @@ export interface StepProps {
     data: CreateConferenceFormData;
     setData: (data: Conference) => void;
 }
-
-export interface CreateFormPageProps {
-    // title?: string;
-    // initialFormData?: ICreateModeratorReq;
-}

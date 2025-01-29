@@ -2,10 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { LogoProps } from './Logo.types';
 import { logoStyles } from './Logo.styles';
 
-export const Logo = ({}: LogoProps) => {
+export const Logo = () => {
     return (
         <Link href="" className={logoStyles({})}>
             <Image

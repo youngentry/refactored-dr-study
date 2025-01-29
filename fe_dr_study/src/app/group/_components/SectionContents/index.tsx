@@ -1,12 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/atoms';
-import { useDispatch } from 'react-redux';
-import { setIsModalOpen, setModalContent } from '@/store/slices/modalSlice';
 import ListConferenceToday from '../ListConferenceTodays';
 import ArticleListContent from './ArticleListContent';
-import { ConferenceWithMembersData } from '../../[group_id]/_types';
-import { IConference } from '../../[group_id]/dummy';
 import { GET } from '@/app/api/routeModule';
 import { useRouter } from 'next/navigation';
 import ListConferenceHistoryContent from './ListConfereceHistoryContent';

@@ -1,5 +1,5 @@
 import { SummaryMessageInterface } from '@/components/template/conference/ConferenceTemplate';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 // summaryMessagesState 정의
 interface summaryMessagesState {

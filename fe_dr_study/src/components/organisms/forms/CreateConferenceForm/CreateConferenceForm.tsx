@@ -8,7 +8,6 @@ import { groupAPI as API, conferenceAPI } from '@/app/api/axiosInstanceManager';
 import { useRouter } from 'next/navigation';
 
 const loginFormContainerStyles = 'p-8 my-auto';
-const loginImageContainerStyles = 'w-1/2 relative';
 
 interface CreateConferenceFormReq {
     studyGroupId: string;

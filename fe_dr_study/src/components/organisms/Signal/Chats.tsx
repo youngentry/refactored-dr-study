@@ -43,29 +43,4 @@ const Chats = ({
     );
 };
 
-// 더미 데이터 사용
-// const dummyMessages = [
-//     {
-//         nickname: 'JohnDoe',
-//         imageUrl: '/images/johndoe.png',
-//         time: '2024-08-14T14:00:00Z',
-//         message: 'Hello! How are you?',
-//     },
-//     {
-//         nickname: 'JaneSmith',
-//         imageUrl: '/images/janesmith.png',
-//         time: '2024-08-14T14:05:00Z',
-//         message: 'I am good, thank you! How about you?',
-//     },
-//     {
-//         nickname: 'Alice',
-//         imageUrl: '/images/alice.png',
-//         time: '2024-08-14T14:10:00Z',
-//         message: 'Just working on the project.',
-//     },
-// ];
-
-// 더미 데이터를 Chats 컴포넌트에 전달
-// const ChatsWithDummyData = () => <Chats messages={dummyMessages} />;
-
 export default Chats;

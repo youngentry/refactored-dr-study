@@ -1,4 +1,3 @@
-// src/components/atoms/Input/Input.tsx
 'use client';
 import React from 'react';
 import { inputStyles } from './Input.styles';

@@ -1,4 +1,3 @@
-import { SummaryMessageInterface } from '@/components/template/conference/ConferenceTemplate';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // avatarDialogueState 정의

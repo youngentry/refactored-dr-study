@@ -1,4 +1,3 @@
-// src/components/atoms/Label/Label.tsx
 'use client';
 import React from 'react';
 import { LabelProps } from './Label.types';

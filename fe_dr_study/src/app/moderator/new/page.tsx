@@ -1,4 +1,3 @@
-// fe_dr_study/src/app/moderator/new/page.tsx
 'use client';
 import React, { FormEvent, useState } from 'react';
 import Step1 from './_components/Step1';

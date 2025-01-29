@@ -1,4 +1,3 @@
-import React from 'react';
 import { tv } from 'tailwind-variants';
 
 export const labelStyles = tv({

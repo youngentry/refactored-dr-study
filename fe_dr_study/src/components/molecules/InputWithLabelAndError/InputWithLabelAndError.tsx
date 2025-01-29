@@ -1,4 +1,3 @@
-// src/components/molecules/InputWithLabelAndError/InputWithLabelAndError.tsx
 'use client';
 import React from 'react';
 import { Label } from '@/components/atoms/Label/Label';

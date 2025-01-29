@@ -1,10 +1,9 @@
 'use client';
 
 import Icon from '@/components/atoms/Icon/Icon';
-import CreateConferenceForm from '@/components/organisms/forms/CreateConferenceForm/CreateConferenceForm';
 import CreateConferenceProgress from '@/components/organisms/forms/CreateConferenceForm/CreateConferenceProgress';
 import { RootState } from '@/store';
-import { setCloseModal, setIsModalOpen } from '@/store/slices/modalSlice';
+import { setCloseModal } from '@/store/slices/modalSlice';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

@@ -1,6 +1,5 @@
 import React from 'react';
 import { FaUsers } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
 import MemberAvatar from '@/components/molecules/MemberAvatar';
 
 interface Participant {

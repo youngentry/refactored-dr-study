@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import Carousel from '../Carousel/Carousel';
-import { setTimeForAudioRecord } from '@/store/slices/timeForAudioRecord';
 
 interface Phase {
     id: number; // 단계 ID
@@ -60,7 +59,6 @@ const ConferenceProgress = () => {
     return (
         <div className="relative flex flex-col h-full w-full">
             <div className="PROGRESS-CIRCLE absolute w-24 h-24 rounded-full bg-dr-coral-500 top-[-75%] right-[50%] translate-x-12 z-10"></div>
-            {/* <div className="PROGRESS-LINE absolute w-88 h-24 rounded-full bg-dr-coral-300 border-b-2 border-dr-coral-300 top-[-75%] right-[50%] translate-x-40 z-0"></div> */}
             <div className="absolute top-[50%] left-[50%] translate-x-[-50%] text-dr-white "></div>
             <div className="px-[15%] pt-[0.2rem] mb-4 z-30">
                 <div className="h-full z-30">
@@ -82,37 +80,12 @@ const ConferenceProgress = () => {
 export default ConferenceProgress; // ConferenceProgress 컴포넌트를 기본 내보내기로 설정
 
 export const Timer = () => {
-    const dispatch = useDispatch();
-
     const [timer, setTimer] = useState<number>(0); // 초 단위로 설정
     const [width, setWidth] = useState<number>(100); // 바의 초기 길이 비율 (100%)
 
     const timeForAudioRecord = useSelector(
         (state: RootState) => state.timeForAudioRecord.timeForAudioRecord,
     );
-
-    // useEffect(() => {
-    //     let interval: NodeJS.Timeout;
-    //     if (timer > 0) {
-    //         console.log('in interval');
-    //         interval = setInterval(() => {
-    //             setTimer((prev) => prev - 1);
-    //             setWidth((prev) =>
-    //                 prev > 0
-    //                     ? ((timer - 1) / (timeForAudioRecord / 1000)) * 100
-    //                     : 0,
-    //             );
-    //         }, 1000); // 1초마다 타이머와 진행 바 동기화
-
-    //         if (timer === 0) {
-    //             clearInterval(interval);
-    //             console.log('Audio recording stopped');
-    //             dispatch(setTimeForAudioRecord(0));
-    //         }
-    //     }
-
-    //     return () => clearInterval(interval);
-    // }, [timer]);
 
     useEffect(() => {
         console.log('timeForAudioRecord', timeForAudioRecord);

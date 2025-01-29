@@ -1,4 +1,3 @@
-// src/components/atoms/Input/Input.styles.ts
 import { tv } from 'tailwind-variants';
 
 export const inputStyles = tv({

@@ -6,13 +6,7 @@ import { StepProps } from '../_types';
 import { useRouter } from 'next/navigation';
 import { TextareaWithLabel } from '@/components/molecules/TextareaWithLabel';
 
-const Step2: React.FC<StepProps> = ({
-    onNext,
-    onBack,
-    onSubmit,
-    data,
-    setData,
-}) => {
+const Step2: React.FC<StepProps> = ({ onBack, onSubmit, data }) => {
     const router = useRouter();
 
     return (

@@ -1,26 +1,3 @@
-// conference: {
-//     moderatorInfo: {
-//         id: number,
-//         name: string,
-//         description,
-//         avatarId:
-//         avatarModelType
-//         avatarVoiceType
-//         avatarCharactorType
-//     }
-// }
-// moderator : {
-//     id
-//     name
-//     description
-//     prePrompt
-//     script
-//     createdAt
-//     creator: {
-//         멤버규약
-//     }
-// }
-
 export interface ConferenceData {
     id: number;
     hostId: number;

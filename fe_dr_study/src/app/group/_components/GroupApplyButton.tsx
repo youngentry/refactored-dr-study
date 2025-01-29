@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/atoms';
 import Modal from 'react-modal';
-import { GET, POST } from '@/app/api/routeModule';
+import { POST } from '@/app/api/routeModule';
 import { groupAPI as API } from '@/app/api/axiosInstanceManager';
 import { TextareaWithLabel } from '@/components/molecules/TextareaWithLabel';
 import { showToast } from '@/utils/toastUtil';

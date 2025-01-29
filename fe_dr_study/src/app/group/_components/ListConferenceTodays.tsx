@@ -6,7 +6,6 @@ import { IConference } from '../[group_id]/dummy';
 import { formatDate, getDateTimePart } from '@/utils/date';
 import { getSessionStorageItem } from '@/utils/sessionStorage';
 import ConferenceMemberList from './ConferenceMemberList';
-import Image from 'next/image';
 
 interface ListConferenceTodayProps {
     conferences: IConference[];

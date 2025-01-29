@@ -95,7 +95,6 @@ const ConferenceStartAndCloseButtons = ({
 
 export default ConferenceStartAndCloseButtons;
 
-// ========
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 // showTextAudioMessageBoxState 정의
 interface showTextAudioMessageBoxState {

@@ -1,4 +1,4 @@
-import { http, HttpResponse, StrictResponse } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 export const mypageMockHandler = [
     http.post('/v1/conferences/1/info', (req) => {

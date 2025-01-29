@@ -2,13 +2,10 @@
 
 import Image from 'next/image';
 import { Moderator } from '@/interfaces/moderator';
-import { use, useEffect, useRef, useState } from 'react';
-import { Button, Label } from '@/components/atoms';
+import { useEffect, useRef, useState } from 'react';
+import { Label } from '@/components/atoms';
 import { useRouter } from 'next/navigation';
-import { getBackgroundColorRandomPastel } from '@/utils/colors';
 import { FaPlay } from 'react-icons/fa';
-import { TextareaWithLabel } from '@/components/molecules/TextareaWithLabel';
-import { ErrorLottie } from '@/app/_components/Lottie/Error/ErrorLottie';
 import MemberAvatar from '@/components/molecules/MemberAvatar';
 
 const ModeratorTemplate = ({ moderators }: { moderators: Moderator[] }) => {

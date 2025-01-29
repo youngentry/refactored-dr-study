@@ -1,7 +1,5 @@
 import { IConference } from '@/app/group/[group_id]/dummy';
 import ListConferenceHistoryContent from '@/app/group/_components/SectionContents/ListConfereceHistoryContent';
-// import { ConferenceParticipantList } from '@/app/group/_components/ListConferenceTodays';
-import Image from 'next/image';
 import React from 'react';
 
 interface ConferenceListProps {

@@ -1,6 +1,4 @@
-import { RootState } from '@/store';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 
 interface SliderProps {
     programme: any;

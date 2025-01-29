@@ -1,4 +1,3 @@
-// src/app/group/new/_components/MemberList.tsx
 import React from 'react';
 import { FaUsers, FaCrown } from 'react-icons/fa';
 import { GroupMember } from '../_api/ssr';

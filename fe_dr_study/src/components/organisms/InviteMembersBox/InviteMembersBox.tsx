@@ -1,5 +1,5 @@
 import { conferenceAPI as API } from '@/app/api/axiosInstanceManager';
-import { GET, POST } from '@/app/api/routeModule';
+import { POST } from '@/app/api/routeModule';
 import { Button } from '@/components/atoms';
 import { ConferenceData, ConferenceMember } from '@/interfaces/conference';
 import { getBackgroundColorRandomPastel } from '@/utils/colors';

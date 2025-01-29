@@ -1,5 +1,3 @@
-// studyGroupQueryResult.d.ts
-
 export interface StudyGroup {
     id: number;
     name: string;
