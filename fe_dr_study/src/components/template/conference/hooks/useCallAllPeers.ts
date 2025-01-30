@@ -54,6 +54,7 @@ const useCallAllPeers = (
         const call = myPeer.call(remotePeerId, localStream.current); // 피어에게 전화 걸기
 
         // 전화 수락 후 스트림 수신 처리
+        call.answer(localStream.current);
         call.on('stream', (remoteStream: MediaStream) => {
             setExistingPeers((prevPeers) => ({
                 ...prevPeers,
