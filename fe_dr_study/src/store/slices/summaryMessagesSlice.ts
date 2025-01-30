@@ -1,7 +1,10 @@
-import { SummaryMessageInterface } from '@/components/template/conference/ConferenceTemplate';
 import { createSlice } from '@reduxjs/toolkit';
 
-// summaryMessagesState 정의
+interface SummaryMessageInterface {
+    message: string;
+    time: string;
+}
+
 interface summaryMessagesState {
     summaryMessages: SummaryMessageInterface[];
 }

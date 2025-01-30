@@ -4,7 +4,6 @@ import ConferenceControlBar from '@/components/organisms/ConferenceControlBar/Co
 import ConferenceProgress from '@/components/organisms/ConferenceProgress/ConferenceProgress';
 import ModeratorAvatar from '@/components/organisms/ModeratorAvatar/Mod';
 import Signal from '@/components/organisms/Signal/Signal';
-import Video from '@/components/organisms/Video/Video';
 import React, { useState } from 'react';
 import TotalSummary from '@/components/organisms/ModeratorAvatar/TotalSummary';
 import { ConferenceData } from '@/interfaces/conference';
@@ -18,11 +17,6 @@ import useInitConference from './hooks/useInitConference';
 
 interface ConferenceTemplateProps {
     conferenceInfo: ConferenceData | null;
-}
-
-export interface SummaryMessageInterface {
-    message: string;
-    time: string;
 }
 
 const ConferenceTemplate = ({ conferenceInfo }: ConferenceTemplateProps) => {
