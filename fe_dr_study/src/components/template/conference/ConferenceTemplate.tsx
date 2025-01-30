@@ -9,12 +9,12 @@ import React, { useState } from 'react';
 import TotalSummary from '@/components/organisms/ModeratorAvatar/TotalSummary';
 import { ConferenceData } from '@/interfaces/conference';
 import useCheckLogin from './hooks/useCheckLogin';
-import useConferenceInit from './hooks/useConferenceInit';
 import usePeerSetup from './hooks/usePeerSetup';
 import useLocalStream from './hooks/useLocalStream';
 import useCallAllPeers from './hooks/useCallAllPeers';
 import useConnectStomp from './hooks/useConnectStomp';
 import VideoGrid from '@/components/organisms/Video/VideoGrid';
+import useInitConference from './hooks/useInitConference';
 
 interface ConferenceTemplateProps {
     conferenceInfo: ConferenceData | null;
@@ -34,17 +34,17 @@ const ConferenceTemplate = ({ conferenceInfo }: ConferenceTemplateProps) => {
         Record<string, MediaStream>
     >({});
 
-    // 1. 회의 상태 초기화
-    const isConferenceInit = useConferenceInit();
+    // 1. 회의실 상태 초기화
+    useInitConference();
     // 2. 피어 설정
-    const { isMyPeerInit, myPeer } = usePeerSetup(isConferenceInit);
+    const { isMyPeerInit, myPeer } = usePeerSetup();
     // 3. 로컬 스트림 설정
     const { isLocalStreamCreated, localStream } = useLocalStream({
         isMyPeerInit,
         setExistingPeers,
         myPeer,
     });
-    // 4. Stomp 연결 (백엔드 설계상 4번과 5번은 독립적으로 실행 가능)
+    // 4. Stomp 연결
     const { stompClientRef } = useConnectStomp({ isLocalStreamCreated });
     // 5. 방에 존재하는 모든 피어와 연결 후, 각 피어의 정보 반환
     const { isJoined, client, currentMembers, setCurrentMembers } =

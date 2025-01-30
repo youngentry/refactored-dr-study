@@ -9,9 +9,7 @@ import { setAvatarDialogue } from '@/store/slices/avatarDialogueSlice';
 import { setTimeForAudioRecord } from '@/store/slices/timeForAudioRecord';
 import { setFocusingId } from '@/store/slices/conferenceFocusingPeerIdSlice';
 
-const useConferenceInit = () => {
-    const [isConferenceInit, setIsConferenceInit] = useState<boolean>(false);
-
+const useInitConference = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,10 +22,7 @@ const useConferenceInit = () => {
         dispatch(setAvatarDialogue(''));
         dispatch(setTimeForAudioRecord(0));
         dispatch(setFocusingId(''));
-        setIsConferenceInit(true);
     }, []);
-
-    return isConferenceInit;
 };
 
-export default useConferenceInit;
+export default useInitConference;
