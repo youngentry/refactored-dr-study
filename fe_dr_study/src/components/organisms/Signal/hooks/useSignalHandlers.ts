@@ -42,7 +42,7 @@ interface SignalInterface {
 const CHANNEL = 'topic'; // 채널 이름
 
 const useSignalHandlers = (
-    stompClient: Client | null,
+    stompClient: Client,
     conferenceId: number,
     setCurrentMembers: Dispatch<SetStateAction<SignalMember[]>>,
     setExistingPeers: Dispatch<SetStateAction<Record<string, MediaStream>>>,
@@ -63,7 +63,7 @@ const useSignalHandlers = (
     // 채팅 메시지 수신을 위한 구독 설정
     const generateUrl = (type: string) => `/${CHANNEL}/${type}/${conferenceId}`;
     const subscribeToMessages = () => {
-        stompClient?.subscribe(generateUrl('chat'), (messageForm: any) => {
+        stompClient.subscribe(generateUrl('chat'), (messageForm: any) => {
             const newMessage: Message = JSON.parse(messageForm.body); // 수신된 메시지 파싱
             setMessages((prevMessages) => [...prevMessages, newMessage]); // 수신된 메시지를 메시지 목록에 추가
 
@@ -86,7 +86,7 @@ const useSignalHandlers = (
         signalType: string,
         handler: (signal: any) => void,
     ) => {
-        stompClient?.subscribe(
+        stompClient.subscribe(
             generateUrl(`signal/${signalType}`),
             (signal: any) => {
                 const newSignal: SignalInterface = JSON.parse(signal.body); // 수신된 신호 파싱
@@ -139,17 +139,6 @@ const useSignalHandlers = (
         }, newSignal.time as number);
     };
 
-    // GPT 요약 신호 처리
-    const handleGPTSummarySignal = (newSignal: SignalInterface) => {
-        dispatch(setGptSummaryBySystem(newSignal.content as string));
-        dispatch(
-            pushSummaryMessages({
-                messageForm: newSignal.content || '[올바르지 않은 문자열]',
-                time: new Date().toLocaleTimeString(),
-            }),
-        );
-    };
-
     // 아바타 현재 발화 신호 처리
     const handleAvatarDialogueSignal = (newSignal: SignalInterface) => {
         dispatch(setAvatarDialogue(newSignal.content as string));
@@ -193,7 +182,7 @@ const useSignalHandlers = (
     // 메시지 전송 함수
     const sendMessage = () => {
         // 메시지가 없을 경우 아무 동작도 하지 않음
-        if (!messageForm.trim()) return;
+        if (!messageForm.trim() || messageForm.length < 1) return;
 
         const messageData = {
             id: memberData?.id, // 송신자 ID
@@ -203,12 +192,23 @@ const useSignalHandlers = (
             time: new Date(), // 송신 시간
         };
 
-        stompClient?.send(
+        stompClient.send(
             `/pub/chat/${conferenceId}`,
             {}, // 헤더
             JSON.stringify(messageData), // 바디
         );
         setMessageForm(''); // 메시지 입력 필드 초기화
+    };
+
+    // GPT 요약 신호 처리
+    const handleGPTSummarySignal = (newSignal: SignalInterface) => {
+        dispatch(setGptSummaryBySystem(newSignal.content as string));
+        dispatch(
+            pushSummaryMessages({
+                messageForm: newSignal.content || '[올바르지 않은 문자열]',
+                time: new Date().toLocaleTimeString(),
+            }),
+        );
     };
 
     const signalHandlers = [
@@ -217,21 +217,21 @@ const useSignalHandlers = (
         { type: 'unmute', handler: handleUnmuteSignal },
         { type: 'participant-speak', handler: handleParticipantSpeakSignal },
         { type: 'avatar-speak', handler: handleAvatarSpeakSignal },
-        { type: 'gpt-summary', handler: handleGPTSummarySignal },
         { type: 'next-step', handler: handleNextStepSignal },
         { type: 'heartstop', handler: handleHeartstop },
         { type: 'programme', handler: handleProgramme },
         { type: 'avatar-dialogue', handler: handleAvatarDialogueSignal },
+        { type: 'gpt-summary', handler: handleGPTSummarySignal },
         { type: 'quit', handler: handleQuitSignal },
     ];
 
     useEffect(() => {
         // 소켓 연결
         const connectSocket = () => {
-            stompClient?.connect(
+            stompClient.connect(
                 { memberId: memberData?.id, roomId: conferenceId },
                 () => {
-                    if (stompClient?.connected) {
+                    if (stompClient.connected) {
                         subscribeToMessages();
                         subscribeToSignals();
                     }

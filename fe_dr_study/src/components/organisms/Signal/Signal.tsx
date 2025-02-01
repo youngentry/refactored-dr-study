@@ -29,7 +29,7 @@ interface SignalProps {
     isJoined: boolean;
     existingPeers: Record<string, MediaStream>;
     setExistingPeers: Dispatch<SetStateAction<Record<string, MediaStream>>>;
-    stompClient: Client | null;
+    stompClient: Client;
     memberData?: any;
     conferenceId: number;
 }
