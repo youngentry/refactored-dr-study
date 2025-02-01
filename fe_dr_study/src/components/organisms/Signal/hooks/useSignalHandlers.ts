@@ -94,7 +94,6 @@ const useSignalHandlers = (
             subscribeToSignal(type, handler);
         });
     };
-
     // 신호 수신을 위한 구독 함수
     const subscribeToSignal = (
         signalType: string,
@@ -108,7 +107,6 @@ const useSignalHandlers = (
             },
         );
     };
-
     // handleQuit 신호 처리
     const handleQuitSignal = () => {
         console.log('handleQuitSignal 호출');
@@ -116,21 +114,18 @@ const useSignalHandlers = (
             `/conference/${conferenceId}/waiting-room?error=finished_conference`,
         );
     };
-
     // Mute 신호 처리
     const handleMuteSignal = (newSignal: SignalInterface) => {
         if (newSignal.id === memberData?.id) {
             dispatch(setIsMutedBySystem(true));
         }
     };
-
     // Unmute 신호 처리
     const handleUnmuteSignal = (newSignal: SignalInterface) => {
         if (newSignal.id === memberData?.id) {
             dispatch(setIsMutedBySystem(false));
         }
     };
-
     // 발화 신호 처리
     const handleParticipantSpeakSignal = (newSignal: SignalInterface) => {
         // newSignal.id 라는 멤버 아이디를 가진 사람의 피어 아이디를 focusingPeerId
@@ -141,7 +136,6 @@ const useSignalHandlers = (
             setIsStartRecordingAudio((prev) => prev + 1); // 오디오 녹음 시작
         }
     };
-
     // 아바타 발화 신호 처리
     const handleAvatarSpeakSignal = (newSignal: SignalInterface) => {
         dispatch(setIsAvatarSpeaking(true));
@@ -152,22 +146,18 @@ const useSignalHandlers = (
             dispatch(setTimeForAvatarSpeaking(0));
         }, newSignal.time as number);
     };
-
     // 아바타 현재 발화 신호 처리
     const handleAvatarDialogueSignal = (newSignal: SignalInterface) => {
         dispatch(setAvatarDialogue(newSignal.content as string));
     };
-
     // 다음 발화자 신호 처리
     const handleNextStepSignal = (newSignal: SignalInterface) => {
         if (newSignal) dispatch(setNextStep());
     };
-
     // 신호 단계 신호 처리
     const handleProgramme = (newSignal: SignalInterface) => {
         dispatch(setFullPhase({ programme: newSignal.programme }));
     };
-
     // joining 단계 신호 처리
     const handleJoining = (newSignal: SignalInterface) => {
         setCurrentMembers((prevMembers): SignalMember[] => [
@@ -179,7 +169,6 @@ const useSignalHandlers = (
             },
         ]);
     };
-
     // 스트림 연결 종료 신호 처리
     const handleHeartstop = (newSignal: SignalInterface) => {
         setExistingPeers((existingPeers) => {
@@ -192,7 +181,6 @@ const useSignalHandlers = (
             currentMembers.filter((member) => member.id !== newSignal.id),
         );
     };
-
     // 메시지 전송 함수
     const sendMessage = () => {
         // 메시지가 없을 경우 아무 동작도 하지 않음
@@ -214,7 +202,6 @@ const useSignalHandlers = (
         );
         setMessageForm(''); // 메시지 입력 필드 초기화
     };
-
     // GPT 요약 신호 처리
     const handleGPTSummarySignal = (newSignal: SignalInterface) => {
         dispatch(setGptSummaryBySystem(newSignal.content as string));
@@ -225,7 +212,6 @@ const useSignalHandlers = (
             }),
         );
     };
-
     const signalHandlers = [
         { type: SIGNAL_TYPES.JOINING, handler: handleJoining },
         { type: SIGNAL_TYPES.MUTE, handler: handleMuteSignal },
