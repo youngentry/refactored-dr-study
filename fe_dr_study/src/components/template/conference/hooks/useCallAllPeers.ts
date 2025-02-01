@@ -20,6 +20,12 @@ export interface ClientInterface {
     streamId: string;
 }
 
+export interface SignalMember {
+    id: number;
+    imageUrl: string | null;
+    nickname: string;
+}
+
 const useCallAllPeers = (
     isLocalStreamCreated: boolean,
     memberData: IMemberData,

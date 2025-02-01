@@ -1,24 +1,16 @@
 import { getSessionStorageItem } from '@/utils/sessionStorage';
 import Image from 'next/image';
 import React from 'react';
+import { Message } from './hooks/useSignalHandlers';
 
-const Chats = ({
-    messages,
-}: {
-    messages: {
-        nickname: string;
-        imageUrl: string;
-        time: string;
-        message: string;
-    }[];
-}) => {
+const Chats = ({ chatList }: { chatList: Message[] }) => {
     return (
         <div className="flex gap-dr-10 flex-col h-full w-full ">
-            {messages.map((msg, index) => (
+            {chatList.map((chat, index) => (
                 <div key={index} className="flex items-start p-2 rounded-lg">
                     <div className="relative mr-2 min-w-[2rem] min-h-[2rem] rounded-full overflow-hidden">
                         <Image
-                            src={`${msg?.imageUrl || '/images/speaking.png'}`}
+                            src={`${chat?.imageUrl || '/images/speaking.png'}`}
                             alt="Profile"
                             fill
                         />
@@ -26,15 +18,15 @@ const Chats = ({
                     <div className="flex flex-col">
                         <div className="flex items-center">
                             <span className="font-semibold text-slate-300 text-dr-body-3">
-                                {msg?.nickname}
+                                {chat?.nickname}
                             </span>
                             <span className="text-slate-500 text-dr-body-4 ml-2">
-                                {msg?.time &&
-                                    new Date(msg?.time).toLocaleDateString()}
+                                {chat?.time &&
+                                    new Date(chat?.time).toLocaleDateString()}
                             </span>{' '}
                         </div>
                         <div className="text-slate-200 text-dr-body-4">
-                            {msg.message}
+                            {chat.messageForm}
                         </div>
                     </div>
                 </div>
