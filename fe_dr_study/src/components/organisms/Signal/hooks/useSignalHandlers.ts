@@ -53,6 +53,7 @@ const SIGNAL_TYPES = {
     GPT_SUMMARY: 'gpt-summary',
     QUIT: 'quit',
 };
+const MIN_MESSAGE_LENGTH = 1; // 최소 메시지 길이
 
 const useSignalHandlers = (
     stompClient: Client,
@@ -195,7 +196,8 @@ const useSignalHandlers = (
     // 메시지 전송 함수
     const sendMessage = () => {
         // 메시지가 없을 경우 아무 동작도 하지 않음
-        if (!messageForm.trim() || messageForm.length < 1) return;
+        if (!messageForm.trim() || messageForm.length < MIN_MESSAGE_LENGTH)
+            return;
 
         const messageData = {
             id: memberData?.id, // 송신자 ID
