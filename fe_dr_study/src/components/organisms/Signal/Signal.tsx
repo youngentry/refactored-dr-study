@@ -245,24 +245,22 @@ const Signal = ({
     // 메시지 전송 함수
     const sendMessage = () => {
         // 메시지가 없을 경우 아무 동작도 하지 않음
-        if (!message.trim()) {
-            return;
-        }
+        if (!message.trim()) return;
 
-        if (stompClient) {
-            stompClient?.send(
-                `/pub/chat/${conferenceId}`,
-                {},
-                JSON.stringify({
-                    id: memberData?.id, // 송신자 ID
-                    message: message.trim(), // 송신할 메시지
-                    nickname: memberData?.nickname, // 송신자 닉네임
-                    imageUrl: memberData?.imageUrl, // 송신자 이미지 URL
-                    time: new Date(), // 송신 시간
-                }),
-            );
-            setMessage(''); // 메시지 입력 필드 초기화
-        }
+        const messageData = {
+            id: memberData?.id, // 송신자 ID
+            message: message.trim(), // 송신할 메시지
+            nickname: memberData?.nickname, // 송신자 닉네임
+            imageUrl: memberData?.imageUrl, // 송신자 이미지 URL
+            time: new Date(), // 송신 시간
+        };
+
+        stompClient?.send(
+            `/pub/chat/${conferenceId}`,
+            {}, // 헤더
+            JSON.stringify(messageData), // 바디
+        );
+        setMessage(''); // 메시지 입력 필드 초기화
     };
 
     return (
