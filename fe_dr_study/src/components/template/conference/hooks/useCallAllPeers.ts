@@ -90,7 +90,7 @@ const useCallAllPeers = (
                 setCurrentMembers((prevMembers) => [
                     ...prevMembers,
                     ...roomPeerData.existingMembers,
-                ]);
+                ]); // 멤버 정보 저장
                 setIsJoined(true); // 방 참여 완료
                 setExistingPeerIds([
                     ...existingPeerIds,
@@ -137,8 +137,8 @@ const useCallAllPeers = (
 
 const reconnectPeer = (myPeer: Peer) => {
     const RECONNECT_TIME = 3000; // 재연결 시도 간격 (ms)
-    let reconnect_count = 5; // 최대 재연결 시도 횟수
 
+    let reconnect_count = 5; // 최대 재연결 시도 횟수
     let reconnectTimeout: NodeJS.Timeout | null = null;
 
     const attemptReconnect = () => {
@@ -148,7 +148,7 @@ const reconnectPeer = (myPeer: Peer) => {
         }
 
         reconnect_count -= 1;
-        console.warn(`Peer 재연결 시도 중 (남은 횟수: ${reconnect_count})`);
+        console.error(`Peer 재연결 시도 중 (남은 횟수: ${reconnect_count})`);
         try {
             myPeer.reconnect();
         } catch (error) {

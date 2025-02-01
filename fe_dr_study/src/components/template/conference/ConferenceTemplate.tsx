@@ -33,7 +33,7 @@ const ConferenceTemplate = ({ conferenceInfo }: ConferenceTemplateProps) => {
     // 2. 피어 설정
     const { isMyPeerInit, myPeer } = usePeerSetup();
     // 3. 로컬 스트림 설정
-    const { isLocalStreamCreated, localStream } = useLocalStream({
+    const { isLocalStreamCreated, localStreamRef } = useLocalStream({
         isMyPeerInit,
         setExistingPeers,
         myPeer,
@@ -48,7 +48,7 @@ const ConferenceTemplate = ({ conferenceInfo }: ConferenceTemplateProps) => {
             myPeer,
             conferenceInfo,
             setExistingPeers,
-            localStream,
+            localStreamRef,
         );
 
     return (
@@ -81,7 +81,7 @@ const ConferenceTemplate = ({ conferenceInfo }: ConferenceTemplateProps) => {
                         client={client.current}
                         stompClient={stompClientRef.current}
                         conferenceId={conferenceInfo?.id || 0}
-                        localStream={localStream.current}
+                        localStream={localStreamRef.current}
                         existingPeers={existingPeers}
                         setExistingPeers={setExistingPeers}
                     />

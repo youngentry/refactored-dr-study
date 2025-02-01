@@ -13,7 +13,7 @@ const useLocalStream = ({
     setExistingPeers,
     myPeer,
 }: useLocalStreamProps) => {
-    const localStream = useRef<MediaStream | null>(null);
+    const localStreamRef = useRef<MediaStream | null>(null);
 
     const [isLocalStreamCreated, setIsLocalStreamCreated] = useState(false);
 
@@ -23,7 +23,7 @@ const useLocalStream = ({
         navigator.mediaDevices
             .getUserMedia({ video: true, audio: true })
             .then((stream) => {
-                localStream.current = stream;
+                localStreamRef.current = stream;
                 setExistingPeers((prevPeers) => ({
                     ...prevPeers,
                     [myPeer.id]: stream,
@@ -35,8 +35,8 @@ const useLocalStream = ({
             );
 
         return () => {
-            if (localStream.current) {
-                localStream.current
+            if (localStreamRef.current) {
+                localStreamRef.current
                     .getTracks()
                     .forEach((track) => track.stop());
             }
@@ -45,7 +45,7 @@ const useLocalStream = ({
 
     return {
         isLocalStreamCreated,
-        localStream,
+        localStreamRef,
     };
 };
 
