@@ -3,6 +3,7 @@ import {
     Dispatch,
     RefObject,
     SetStateAction,
+    useCallback,
     useEffect,
     useRef,
     useState,
@@ -30,11 +31,9 @@ const useCallAllPeers = (
     const router = useRouter();
 
     const [isJoined, setIsJoined] = useState<boolean>(false); // 방에 조인되었는지 여부
-
     const [existingPeerIds, setExistingPeerIds] = useState<string[]>([]); // 현재 방에 있는 피어들의 ID
-
-    // 현재 멤버
     const [currentMembers, setCurrentMembers] = useState<any[]>([
+        // 참여 중인 멤버 정보
         {
             id: memberData?.id,
             nickname: memberData.nickname,
@@ -48,20 +47,23 @@ const useCallAllPeers = (
         streamId: localStream.current?.id as string, // 스트림 ID
     });
 
-    const makeCall = (remotePeerId: string) => {
-        if (!myPeer || !localStream.current) return;
+    const makeCall = useCallback(
+        (remotePeerId: string) => {
+            if (!myPeer || !localStream.current) return;
 
-        const call = myPeer.call(remotePeerId, localStream.current); // 피어에게 전화 걸기
+            const call = myPeer.call(remotePeerId, localStream.current); // 피어에게 전화 걸기
 
-        // 전화 수락 후 스트림 수신 처리
-        call.answer(localStream.current);
-        call.on('stream', (remoteStream: MediaStream) => {
-            setExistingPeers((prevPeers) => ({
-                ...prevPeers,
-                [remotePeerId]: remoteStream, // 새로 수신된 스트림을 기존 peers에 추가
-            }));
-        });
-    };
+            // 전화 수락 후 스트림 수신 처리
+            call.answer(localStream.current);
+            call.on('stream', (remoteStream: MediaStream) => {
+                setExistingPeers((prevPeers) => ({
+                    ...prevPeers,
+                    [remotePeerId]: remoteStream, // 새로 수신된 스트림을 기존 peers에 추가
+                }));
+            });
+        },
+        [myPeer, localStream],
+    );
 
     useEffect(() => {
         try {
@@ -85,11 +87,13 @@ const useCallAllPeers = (
                     ...roomPeerData.existingMembers,
                 ]);
 
-                roomPeerData.existingPeerIds.forEach((remotePeerId: string) =>
-                    makeCall(remotePeerId),
-                );
+                reconnectPeer(myPeer as Peer); // Peer 끊긴 경우에는 재연결 시도
 
-                setIsJoined(true);
+                roomPeerData.existingPeerIds.forEach((remotePeerId: string) => {
+                    makeCall(remotePeerId);
+                });
+
+                setIsJoined(true); // 방 참여 완료
                 setExistingPeerIds([
                     ...existingPeerIds,
                     ...roomPeerData.existingPeerIds,
@@ -131,6 +135,48 @@ const useCallAllPeers = (
         currentMembers,
         setCurrentMembers,
     };
+};
+
+const reconnectPeer = (myPeer: Peer) => {
+    const RECONNECT_TIME = 3000; // 재연결 시도 간격 (ms)
+    let reconnect_count = 5; // 최대 재연결 시도 횟수
+
+    // 재연결 setTimeout
+    const reconnectTimeout = setTimeout(() => {
+        try {
+            reconnect_count -= 1;
+            console.warn(`Peer 재연결 시도 중 (남은 횟수: ${reconnect_count})`);
+            myPeer.reconnect();
+        } catch (error) {
+            console.error('Peer 재연결 실패:', error);
+        }
+    }, RECONNECT_TIME);
+
+    // 연결 성공 시
+    myPeer.on('open', (id) => {
+        console.log(`Peer 연결 성공 ID: ${myPeer.id}`);
+        reconnect_count = 5; // 재연결 횟수 초기화
+
+        // 연결 성공 시 기존 타이머 제거
+        if (reconnectTimeout) {
+            clearTimeout(reconnectTimeout);
+        }
+    });
+
+    // 연결 실패 시
+    myPeer.on('disconnected', () => {
+        if (reconnect_count <= 0) {
+            console.warn(
+                'Peer 연결에 실패했습니다. 페이지를 새로고침해 다시 접속해주세요.',
+            );
+            return;
+        }
+
+        if (!myPeer.destroyed) {
+        } else {
+            console.error('Peer가 완전히 종료되어 재연결할 수 없습니다.');
+        }
+    });
 };
 
 export default useCallAllPeers;

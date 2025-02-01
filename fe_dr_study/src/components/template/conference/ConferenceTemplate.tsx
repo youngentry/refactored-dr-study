@@ -40,7 +40,7 @@ const ConferenceTemplate = ({ conferenceInfo }: ConferenceTemplateProps) => {
     });
     // 4. Stomp 연결
     const { stompClientRef } = useConnectStomp({ isLocalStreamCreated });
-    // 5. 방에 존재하는 모든 피어와 연결 후, 각 피어의 정보 반환
+    // 5. 방에 존재하는 모든 피어와 연결 후, 참여자 정보 반환
     const { isJoined, client, currentMembers, setCurrentMembers } =
         useCallAllPeers(
             isLocalStreamCreated,
