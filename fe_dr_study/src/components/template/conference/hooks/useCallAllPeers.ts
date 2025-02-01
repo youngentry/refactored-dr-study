@@ -82,17 +82,15 @@ const useCallAllPeers = (
             (async () => {
                 const roomPeerData = await getRoomPeerData(conferenceInfo?.id);
 
-                setCurrentMembers((prevMembers) => [
-                    ...prevMembers,
-                    ...roomPeerData.existingMembers,
-                ]);
-
                 reconnectPeer(myPeer as Peer); // Peer 끊긴 경우에는 재연결 시도
-
                 roomPeerData.existingPeerIds.forEach((remotePeerId: string) => {
                     makeCall(remotePeerId);
                 });
 
+                setCurrentMembers((prevMembers) => [
+                    ...prevMembers,
+                    ...roomPeerData.existingMembers,
+                ]);
                 setIsJoined(true); // 방 참여 완료
                 setExistingPeerIds([
                     ...existingPeerIds,
@@ -141,38 +139,44 @@ const reconnectPeer = (myPeer: Peer) => {
     const RECONNECT_TIME = 3000; // 재연결 시도 간격 (ms)
     let reconnect_count = 5; // 최대 재연결 시도 횟수
 
-    // 재연결 setTimeout
-    const reconnectTimeout = setTimeout(() => {
+    let reconnectTimeout: NodeJS.Timeout | null = null;
+
+    const attemptReconnect = () => {
+        if (reconnect_count <= 0) {
+            console.warn('Peer 재연결 실패. 페이지를 새로고침해 주세요.');
+            return;
+        }
+
+        reconnect_count -= 1;
+        console.warn(`Peer 재연결 시도 중 (남은 횟수: ${reconnect_count})`);
         try {
-            reconnect_count -= 1;
-            console.warn(`Peer 재연결 시도 중 (남은 횟수: ${reconnect_count})`);
             myPeer.reconnect();
         } catch (error) {
             console.error('Peer 재연결 실패:', error);
         }
-    }, RECONNECT_TIME);
+    };
 
-    // 연결 성공 시
+    // 연결 성공 시 setInterval 초기화
     myPeer.on('open', (id) => {
-        console.log(`Peer 연결 성공 ID: ${myPeer.id}`);
+        console.log(`Peer 연결 성공 => ID: ${id}`);
         reconnect_count = 5; // 재연결 횟수 초기화
 
-        // 연결 성공 시 기존 타이머 제거
+        // 기존의 재연결 타이머가 있다면 제거
         if (reconnectTimeout) {
             clearTimeout(reconnectTimeout);
+            reconnectTimeout = null;
         }
     });
 
-    // 연결 실패 시
+    // 연결이 끊어졌을 때 자동 재연결 시도
     myPeer.on('disconnected', () => {
-        if (reconnect_count <= 0) {
-            console.warn(
-                'Peer 연결에 실패했습니다. 페이지를 새로고침해 다시 접속해주세요.',
-            );
-            return;
-        }
-
         if (!myPeer.destroyed) {
+            console.warn('Peer 연결이 끊어졌습니다. 재연결을 시도합니다.');
+
+            if (reconnectTimeout) {
+                clearTimeout(reconnectTimeout);
+            }
+            reconnectTimeout = setTimeout(attemptReconnect, RECONNECT_TIME);
         } else {
             console.error('Peer가 완전히 종료되어 재연결할 수 없습니다.');
         }
