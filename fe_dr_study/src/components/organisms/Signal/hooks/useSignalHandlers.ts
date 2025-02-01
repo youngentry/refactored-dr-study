@@ -40,6 +40,19 @@ interface SignalInterface {
 }
 
 const CHANNEL = 'topic'; // 채널 이름
+const SIGNAL_TYPES = {
+    JOINING: 'joining',
+    MUTE: 'mute',
+    UNMUTE: 'unmute',
+    PARTICIPANT_SPEAK: 'participant-speak',
+    AVATAR_SPEAK: 'avatar-speak',
+    NEXT_STEP: 'next-step',
+    HEARTSTOP: 'heartstop',
+    PROGRAMME: 'programme',
+    AVATAR_DIALOGUE: 'avatar-dialogue',
+    GPT_SUMMARY: 'gpt-summary',
+    QUIT: 'quit',
+};
 
 const useSignalHandlers = (
     stompClient: Client,
@@ -212,17 +225,23 @@ const useSignalHandlers = (
     };
 
     const signalHandlers = [
-        { type: 'joining', handler: handleJoining },
-        { type: 'mute', handler: handleMuteSignal },
-        { type: 'unmute', handler: handleUnmuteSignal },
-        { type: 'participant-speak', handler: handleParticipantSpeakSignal },
-        { type: 'avatar-speak', handler: handleAvatarSpeakSignal },
-        { type: 'next-step', handler: handleNextStepSignal },
-        { type: 'heartstop', handler: handleHeartstop },
-        { type: 'programme', handler: handleProgramme },
-        { type: 'avatar-dialogue', handler: handleAvatarDialogueSignal },
-        { type: 'gpt-summary', handler: handleGPTSummarySignal },
-        { type: 'quit', handler: handleQuitSignal },
+        { type: SIGNAL_TYPES.JOINING, handler: handleJoining },
+        { type: SIGNAL_TYPES.MUTE, handler: handleMuteSignal },
+        { type: SIGNAL_TYPES.UNMUTE, handler: handleUnmuteSignal },
+        {
+            type: SIGNAL_TYPES.PARTICIPANT_SPEAK,
+            handler: handleParticipantSpeakSignal,
+        },
+        { type: SIGNAL_TYPES.AVATAR_SPEAK, handler: handleAvatarSpeakSignal },
+        { type: SIGNAL_TYPES.NEXT_STEP, handler: handleNextStepSignal },
+        { type: SIGNAL_TYPES.HEARTSTOP, handler: handleHeartstop },
+        { type: SIGNAL_TYPES.PROGRAMME, handler: handleProgramme },
+        {
+            type: SIGNAL_TYPES.AVATAR_DIALOGUE,
+            handler: handleAvatarDialogueSignal,
+        },
+        { type: SIGNAL_TYPES.GPT_SUMMARY, handler: handleGPTSummarySignal },
+        { type: SIGNAL_TYPES.QUIT, handler: handleQuitSignal },
     ];
 
     useEffect(() => {
